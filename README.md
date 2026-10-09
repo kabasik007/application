@@ -1,12 +1,51 @@
-# Wrongulator — the calculator that confidently gets it wrong
+# WRONGULATOR ≠
 
-A satirical **Android calculator** built with Kotlin and Jetpack Compose.
+> **Your math. Our opinion.**  
+> Android meme calculator that charges for the revolutionary concept of correct arithmetic.
 
-**FREE:** intentionally incorrect results, clearly labeled as parody.  
-**PRO:** correct answers (planned **$1/month** subscription).
+| Mode | 2 + 2 | Status |
+| --- | --- | --- |
+| FREE | **5** | Intentionally wrong · clearly labeled parody |
+| PRO | **4** | Planned **$1/month** subscription |
+| PRO debug preview | **4** | Testing only; no real payment |
 
-> ⚠️ The first build contains a **demonstration paywall**. It does not process money or activate a paid plan. Google Play Billing, Play Console products, secure entitlement verification and subscription management are required before selling subscriptions.
+![Android](https://img.shields.io/badge/Android-8%2B-3DDC84) ![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-7F52FF) ![Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4)
 
-Read [architecture](docs/ARCHITECTURE.md) and [subscription plan](docs/SUBSCRIPTIONS.md). GitHub Actions builds a debug APK when configured correctly.
+## Status — v0.1 demo
 
-**Application ID:** `com.kabasik007.wrongulator` · **Minimum Android:** 8.0 (API 26)
+✅ Native Kotlin / Compose UI with dark, meme-themed keypad and **≠** app icon.  
+✅ Arithmetic engine using `BigDecimal`, with deterministic wrong answers in FREE and correct arithmetic in PRO.  
+✅ Handles decimals, sign, percent, delete, division by zero, input length; unit tests.  
+✅ English and Ukrainian text.  
+✅ GitHub Actions workflow for unit tests, lint and a downloadable **debug APK**.  
+⚠️ **The $1/month paywall is a demo only. No checkout, paid subscription, or billing backend is connected.**  
+⚠️ GitHub Actions build passing and on-device verification have not been confirmed yet.
+
+## Download APK for your phone
+
+1. Open [Actions → Android — checks and APK](../../actions/workflows/android-ci.yml).
+2. Choose a **successful** workflow run, download artifact `wrongulator-debug-apk`.
+3. Unzip and install `app-debug.apk`. Android may ask to allow app installs from this source.
+
+Debug builds have a **developer-only "Try accurate mode"** button in the mock paywall. A release build must never unlock paid mode without a verified entitlement.
+
+## Local build
+
+Requirements: Android SDK Platform 36, JDK 17 and Gradle 8.13.
+
+```bash
+gradle :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+```
+
+The workflow installs pinned Gradle. A binary Gradle Wrapper is not yet bundled.
+
+## Engineering docs
+
+- [Architecture](docs/ARCHITECTURE.md): small, pure calculator core + Compose/ViewModel.
+- [Subscriptions](docs/SUBSCRIPTIONS.md): honest pricing, Google Play Billing and entitlement security roadmap.
+- [Release](docs/RELEASE.md): APK and release requirements.
+- [AGENTS.md](AGENTS.md): coding and AI assistant contract.
+
+### Subscription note
+
+Real Google Play subscriptions require a properly configured Play Console monthly product, localized pricing, secure purchase verification, cancellation/restore support, and compliance review. They **cannot** be made real simply by writing "$1/month" on a button. The app discloses that its free results are deliberate jokes.
