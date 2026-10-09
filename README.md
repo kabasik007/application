@@ -84,3 +84,8 @@ not another launcher, drawing engine or UI. See [Arcade architecture](docs/ARCAD
 
 **Scope:** All four implementations are compiled into the current APK. This
 version does not load arbitrary external game code or download APK plugins.
+
+
+## v0.5 — Snake Console 2.0 🐍
+
+The Snake game is upgraded to its own arcade-style console view: professional start/pause/game-over overlays, a larger bottom-right action key (**START → PAUSE → RESUME → RESTART**), separated cross-shaped D-pad, swipe-to-steer, sound toggle, haptic response, keyboard/DPAD input, animated movement/eyes/food and live score/high score. The game clock stops when paused or backgrounded. Sound and score settings are local and require no extra permissions. See [Arcade architecture](docs/ARCADE.md).
