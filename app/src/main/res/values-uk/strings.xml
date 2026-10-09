@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Wrongulator</string>
+    <string name="app_tagline">НАЙМЕНШ НАДІЙНИЙ КАЛЬКУЛЯТОР У СВІТІ™</string>
+    <string name="free_label">FREE · ПРИБЛИЗНА ПРАВДА</string>
+    <string name="pro_label">PRO · СПРАВЖНЯ МАТЕМАТИКА</string>
+    <string name="pro_demo_label">PRO DEMO · ТОЧНО</string>
+    <string name="hero_caption">Твої числа. Наша думка.</string>
+    <string name="idle_hint">Точність трохи переоцінена.</string>
+    <string name="wrong_hint">⚠ ЖАРТ · РЕЗУЛЬТАТ НАВМИСНО НЕПРАВИЛЬНИЙ</string>
+    <string name="correct_hint">✓ ТОЧНИЙ РЕЗУЛЬТАТ · ДЕМО PRO</string>
+    <string name="error_hint">Ділення на нуль? Навіть у нас є стандарти.</string>
+    <string name="upgrade_title">Точність тепер преміумфункція.</string>
+    <string name="upgrade_body">$1 на місяць за відповіді, які прийме твоя вчителька.
+
+У демоверсії платежі не підключено, гроші не списуються, підписка не активується. Реальна місячна підписка автоматично продовжуватиметься до скасування.</string>
+    <string name="upgrade_button">ОТРИМАТИ PRO · $1 / МІС.</string>
+    <string name="upgrade_close">Та ну його</string>
+    <string name="upgrade_understood">Зрозуміло</string>
+    <string name="debug_try_pro">Перевірити точний режим · демо</string>
+    <string name="debug_leave_pro">Назад до неправди</string>
+    <string name="paywall_notice">ДЕМО ПІДПИСКИ · БЕЗ СПИСАНЬ</string>
+    <string name="app_footer">Wrongulator™ · Сатира, не фінансова порада.</string>
+</resources>
