@@ -20,4 +20,23 @@
     <string name="debug_leave_pro">Назад до неправди</string>
     <string name="paywall_notice">ДЕМО ПІДПИСКИ · БЕЗ СПИСАНЬ</string>
     <string name="app_footer">Wrongulator™ · Сатира, не фінансова порада.</string>
+    <string name="parody_result">ЖАРТ · НАВМИСНО НЕПРАВИЛЬНО</string>
+    <string name="error_short">НЕДОСТУПНО</string>
+    <string name="pro_preview">ТОЧНО · ДЕМО</string>
+    <string name="unlock_accuracy">Розблокувати точні результати</string>
+    <string name="paywall_eyebrow">WRONGULATOR PRO</string>
+    <string name="paywall_heading">Точність розблоковано.</string>
+    <string name="paywall_subtitle">Оберіть доступ до правильних відповідей.</string>
+    <string name="plan_month">На місяць</string>
+    <string name="plan_month_detail">$1/міс. · автоподовження</string>
+    <string name="plan_gift">На 3 місяці</string>
+    <string name="plan_gift_detail">$2 за 3 місяці · потім $1/міс.</string>
+    <string name="free_third_month">3-Й МІСЯЦЬ У ПОДАРУНОК</string>
+    <string name="plan_forever">Назавжди</string>
+    <string name="plan_forever_detail">Одноразово · без поновлення</string>
+    <string name="paywall_continue">Продовжити</string>
+    <string name="paywall_disclosure">Демонстрація тарифів · Платежі та підписки не активні. За умов реального запуску: перші 3 місяці за $2, потім автоподовження за $1/міс. до скасування.</string>
+    <string name="billing_demo_title">Демонстрація оплати</string>
+    <string name="billing_demo_message">Це концепт екрана підписки. Гроші не списуються, підписка не активується. Для реальних покупок потрібен Google Play Billing.</string>
+    <string name="billing_demo_ok">Закрити</string>
 </resources>
