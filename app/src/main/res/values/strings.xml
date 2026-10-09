@@ -43,7 +43,7 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="menu_tools">Smart Tools</string>
     <string name="menu_about">About</string>
     <string name="drawer_subtitle">Your math. Our opinion.</string>
-    <string name="drawer_footer">v0.3 · The calculator is satire.</string>
+    <string name="drawer_footer">v0.4 · The calculator is satire.</string>
     <string name="tools_title">Smart Tools</string>
     <string name="tools_intro">These calculations are genuinely accurate. Free for everyone.</string>
     <string name="discount_title">Discount</string>
@@ -61,4 +61,28 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="about_explanation">Wrongulator is a satirical calculator: results on the main FREE screen are deliberately wrong and must not be used for real calculations. PRO offers are demonstrations only.</string>
     <string name="about_tools">Need real numbers? Smart Tools gives you correct discounts and bill splitting, absolutely free.</string>
     <string name="about_billing">No payments or subscriptions are active in this build. No data is sent to a server. Made for laughs — not for financial decisions.</string>
+    <string name="menu_arcade">Arcade</string>
+    <string name="arcade_heading">Your pocket console.</string>
+    <string name="arcade_subtitle">Four instant-play classics. No downloads. No ads.</string>
+    <string name="arcade_play">PLAY</string>
+    <string name="arcade_library">Library</string>
+    <string name="arcade_pause">Pause</string>
+    <string name="arcade_resume">Resume</string>
+    <string name="arcade_restart">Play again</string>
+    <string name="arcade_score">SCORE</string>
+    <string name="arcade_best">BEST</string>
+    <string name="arcade_paused">PAUSED</string>
+    <string name="arcade_game_over">GAME OVER</string>
+    <string name="game_snake">Snake</string>
+    <string name="snake_about">Eat dots, grow longer, avoid walls.</string>
+    <string name="snake_controls">Arrows: change direction</string>
+    <string name="game_blocks">Block Drop</string>
+    <string name="blocks_about">Stack shapes, clear lines, beat your best.</string>
+    <string name="blocks_controls">◀ ▶ Move · ▲ Rotate · ▼ Down · ● Drop</string>
+    <string name="game_balls">Countryballs</string>
+    <string name="balls_about">Dodge rival balls, catch gold coins.</string>
+    <string name="balls_controls">◀ ▶ Move · ● Shield</string>
+    <string name="game_moto">Moto Trail</string>
+    <string name="moto_about">Jump cones, race across rolling hills.</string>
+    <string name="moto_controls">▶ Boost · ◀ Brake · ● Jump</string>
 </resources>

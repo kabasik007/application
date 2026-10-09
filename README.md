@@ -60,3 +60,27 @@ Use the ☰ icon (or swipe from the left edge) to open the side drawer. It has t
 - **About:** transparent explanation of the satirical calculator and mock billing.
 
 The FREE result still triggers the animated mock subscription offer. There are no real purchases. The right side of the UI remains compact enough for portrait videos.
+
+
+## v0.4 — Arcade OS: your pocket console
+
+Open the left drawer → **Arcade / Ігротека**. Play four complete native mini-games:
+
+| Game | Controller | Goal |
+| --- | --- | --- |
+| 🐍 Snake | ▲ ▼ ◀ ▶ | Collect food and grow without hitting walls |
+| ▦ Block Drop | ◀ ▶ move, ▲ rotate, ▼ lower, ● hard drop | Clear horizontal lines |
+| 🌐 Countryballs Dodge | ◀ ▶ move, ● protective shield | Dodge falling balls, collect gold |
+| 🏍 Moto Trail | ▶ throttle, ◀ brake, ● jump | Survive obstacles and score distance |
+
+All games have a pause button, restarts, real score and a **local high score**.
+Games are offline, ad-free and play instantly with procedural graphics.
+
+**Architecture:** Each game is its own Kotlin source file implementing the
+shared `ArcadeGame` interface. The arcade orchestrator constructs only the
+selected game, runs one lifecycle-aware loop and uses a single Compose Canvas
+renderer. Adding a new game means a new file plus a catalog registration,
+not another launcher, drawing engine or UI. See [Arcade architecture](docs/ARCADE.md).
+
+**Scope:** All four implementations are compiled into the current APK. This
+version does not load arbitrary external game code or download APK plugins.

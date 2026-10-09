@@ -37,6 +37,7 @@ import com.kabasik007.wrongulator.R
 enum class AppDestination(val title: Int, val symbol: String) {
     CALCULATOR(R.string.menu_calculator, "≠"),
     TOOLS(R.string.menu_tools, "✓"),
+    ARCADE(R.string.menu_arcade, "▣"),
     ABOUT(R.string.menu_about, "ⓘ")
 }
 
