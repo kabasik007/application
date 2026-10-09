@@ -372,6 +372,7 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
         }
         BoxWithConstraints(Modifier.fillMaxWidth().padding(bottom = 4.dp)) {
             val keySize = (maxWidth.value * .175f).coerceIn(46f, 63f).dp
+            val actionSize = (maxWidth.value * .23f).coerceIn(66f, 87f).dp
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Bottom,
@@ -419,7 +420,7 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
                     Spacer(Modifier.height(6.dp))
                     Button(
                         onClick = { mainAction() },
-                        modifier = Modifier.size((maxWidth.value * .23f).coerceIn(66f, 87f).dp),
+                        modifier = Modifier.size(actionSize),
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = snakeMint, contentColor = snakeInk,
