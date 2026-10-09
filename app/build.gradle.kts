@@ -12,8 +12,8 @@ android {
         applicationId = "com.kabasik007.wrongulator"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "0.3.0"
+        versionCode = 4
+        versionName = "0.4.0"
     }
 
     buildTypes {
@@ -45,6 +45,7 @@ kotlin {
 dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
