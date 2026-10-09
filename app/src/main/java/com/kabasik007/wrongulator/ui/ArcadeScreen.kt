@@ -104,6 +104,8 @@ fun ArcadeScreen(modifier: Modifier = Modifier) {
     val selected = catalog.firstOrNull { it.id == selectedId }
     if (selected == null) {
         ArcadeLibrary(modifier, onPlay = { selectedId = it })
+    } else if (selected.id == "snake") {
+        SnakeConsole(onExit = { selectedId = null }, modifier = modifier)
     } else {
         ArcadeSession(entry = selected, onExit = { selectedId = null }, modifier = modifier)
     }
@@ -227,28 +229,7 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
                 // Reading Compose state invalidates the Canvas every fixed tick.
                 val currentFrame = revision
                 if (currentFrame < 0) return@Canvas
-                val scale = min(size.width / game.width, size.height / game.height)
-                val offsetX = (size.width - game.width * scale) / 2f
-                val offsetY = (size.height - game.height * scale) / 2f
-                val painter = object : ArcadePainter {
-                    override fun box(x: Float, y: Float, width: Float, height: Float, argb: Int) {
-                        drawRect(Color(argb), Offset(offsetX + x * scale, offsetY + y * scale),
-                            Size(width.coerceAtLeast(0f) * scale, height.coerceAtLeast(0f) * scale))
-                    }
-                    override fun disc(x: Float, y: Float, radius: Float, argb: Int) {
-                        drawCircle(Color(argb), radius * scale,
-                            Offset(offsetX + x * scale, offsetY + y * scale))
-                    }
-                    override fun line(
-                        x1: Float, y1: Float, x2: Float, y2: Float, argb: Int, stroke: Float,
-                    ) {
-                        drawLine(Color(argb),
-                            Offset(offsetX + x1 * scale, offsetY + y1 * scale),
-                            Offset(offsetX + x2 * scale, offsetY + y2 * scale),
-                            strokeWidth = (stroke * scale).coerceAtLeast(1f))
-                    }
-                }
-                game.paint(painter)
+                drawArcadeFrame(game)
             }
             if (paused || finishedNow) {
                 Column(

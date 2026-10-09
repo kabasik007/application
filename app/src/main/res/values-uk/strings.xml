@@ -85,4 +85,9 @@
     <string name="game_moto">Moto Trail</string>
     <string name="moto_about">Перестрибуй конуси та пагорби.</string>
     <string name="moto_controls">▶ Газ · ◀ Гальма · ● Стрибок</string>
+    <string name="snake_ready">ГОТОВИЙ ДО ГРИ?</string>
+    <string name="snake_start">Почати гру</string>
+    <string name="snake_intro">Збирай золоті кульки. Уникай стін та власного хвоста.</string>
+    <string name="snake_speed">РІВЕНЬ</string>
+    <string name="snake_hint">Свайпай на полі або керуй кнопками</string>
 </resources>

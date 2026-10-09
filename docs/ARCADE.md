@@ -71,3 +71,13 @@ where a commercial game's brand or artwork would create rights concerns.
 Run Gradle tests, lint and debug APK build through GitHub Actions. On-device
 latency, FPS, controller feel, process death and font scaling still need
 hands-on testing. Avoid stating hardware performance without measurements.
+
+## v0.5 Snake Console 2.0
+
+Snake now launches inside a dedicated premium-styled screen while sharing the common `ArcadeGame` contract and central `drawArcadeFrame` renderer. The game is **READY** on opening, and the large bottom-right action button starts play. While playing, the same button pauses; paused play resumes with it; GAME OVER turns it into restart. The overlay mirrors those actions. Touch D-pad and directional swipes are supported, as are keyboard / external DPAD directional keys and A/Enter/Space. Navigation back stops the game loop.
+
+The pure Kotlin `SnakeGame` keeps previous and current grid coordinates and interpolates visually at a vsync-paced rate while the logical movement stays on a fixed interval (155ms down to 78ms with score). Food has subtle pulse/spark effects, the head has directional eyes, and score animates on collection. The render interpolation does not change game logic.
+
+Audio uses a small Android-native ToneGenerator wrapper (no network or bundled files) for start, pickup, game-over and pause. Players can mute it using `♪ ON/OFF`; their preference and high scores stay on the device. Haptic feedback is used on controls. On backgrounding, Snake pauses and **does not automatically resume** when the app comes back. Only the active game runs an update loop. No changes to other game engines.
+
+Performance limitations: visual animation follows the display refresh rate only while playing; offscreen/paused loops stop. Native touchscreen feel, battery, audio latency, screen reader behavior and devices of varying aspect ratio require on-device QA; passing CI proves only compile/tests/lint, not frame-rate targets.
