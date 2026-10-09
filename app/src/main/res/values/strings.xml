@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Wrongulator</string>
+    <string name="app_tagline">THE WORLD’S LEAST RELIABLE CALCULATOR™</string>
+    <string name="free_label">FREE · APPROXIMATE TRUTH</string>
+    <string name="pro_label">PRO · REAL MATH</string>
+    <string name="pro_demo_label">PRO DEMO · ACCURATE</string>
+    <string name="hero_caption">Your math. Our opinion.</string>
+    <string name="idle_hint">Numbers are more fun when they’re wrong.</string>
+    <string name="wrong_hint">⚠ PARODY ANSWER · INTENTIONALLY INCORRECT</string>
+    <string name="correct_hint">✓ CORRECT ANSWER · PRO DEMO</string>
+    <string name="error_hint">Division by zero? Even we have standards.</string>
+    <string name="upgrade_title">Accuracy is now a premium feature.</string>
+    <string name="upgrade_body">$1/month for answers your school would accept.
+
+In this demo no payments are connected, nothing is charged, and there is no active subscription. A real monthly plan would renew automatically until canceled.</string>
+    <string name="upgrade_button">GET PRO · $1 / MONTH</string>
+    <string name="upgrade_close">Not today</string>
+    <string name="upgrade_understood">Got it</string>
+    <string name="debug_try_pro">Try accurate mode · debug demo</string>
+    <string name="debug_leave_pro">Back to wrong answers</string>
+    <string name="paywall_notice">PAYWALL PREVIEW · NO REAL PAYMENTS</string>
+    <string name="app_footer">Wrongulator™ · Satire, not financial advice.</string>
+</resources>
