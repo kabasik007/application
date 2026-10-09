@@ -31,3 +31,13 @@ A publicly downloaded APK from GitHub **does not automatically have working
 Google Play subscriptions**. Production billing generally depends on the
 configured Play Console app/product and distribution/testing environment.
 Do not attempt to charge through an invented paywall or an untrusted link.
+
+## v0.2 offer concept (not a live product)
+
+The modern paywall shows three **illustrative, not purchasable** choices:
+
+- **Monthly:** $1/month, monthly auto-renewal if a real product launches.
+- **3 months (featured):** $2 total for the first 3 months; **the third month is free** compared with three $1 months. Then $1/month auto-renewal until cancellation, if implemented.
+- **Lifetime:** $19.99 once; no renewal.
+
+Tapping a tariff only selects it. The Continue button opens a clear demo-only notice and **does not grant entitlement**. Only the explicitly debug-gated preview can show accurate calculations. Prices and offers must be validated against Play Console before billing is activated; localized actual purchase pricing comes from Play Billing.
