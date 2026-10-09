@@ -192,7 +192,6 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
             }
             interpolation = if (game.finished) 1f
                 else (elapsed / game.intervalMs).coerceIn(0f, 1f)
-            revision++
         }
     }
 
