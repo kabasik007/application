@@ -9,7 +9,7 @@ internal class SnakeSounds : AutoCloseable {
         ToneGenerator(AudioManager.STREAM_MUSIC, 46)
     }.getOrNull()
 
-    enum class Cue { START, TURN, EAT, LOSE, PAUSE }
+    enum class Cue { START, TURN, EAT, LOSE, PAUSE, BLAST, EMPTY }
 
     fun play(cue: Cue, enabled: Boolean) {
         if (!enabled) return
@@ -19,6 +19,8 @@ internal class SnakeSounds : AutoCloseable {
             Cue.EAT -> ToneGenerator.TONE_DTMF_9 to 95
             Cue.LOSE -> ToneGenerator.TONE_PROP_NACK to 170
             Cue.PAUSE -> ToneGenerator.TONE_PROP_ACK to 75
+            Cue.BLAST -> ToneGenerator.TONE_DTMF_D to 180
+            Cue.EMPTY -> ToneGenerator.TONE_PROP_NACK to 55
         }
         runCatching { tones?.startTone(tone, duration) }
     }

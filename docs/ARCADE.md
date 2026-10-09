@@ -81,3 +81,10 @@ The pure Kotlin `SnakeGame` keeps previous and current grid coordinates and inte
 Audio uses a small Android-native ToneGenerator wrapper (no network or bundled files) for start, pickup, game-over and pause. Players can mute it using `♪ ON/OFF`; their preference and high scores stay on the device. Haptic feedback is used on controls. On backgrounding, Snake pauses and **does not automatically resume** when the app comes back. Only the active game runs an update loop. No changes to other game engines.
 
 Performance limitations: visual animation follows the display refresh rate only while playing; offscreen/paused loops stop. Native touchscreen feel, battery, audio latency, screen reader behavior and devices of varying aspect ratio require on-device QA; passing CI proves only compile/tests/lint, not frame-rate targets.
+
+
+## v0.6 — Snake Combat
+
+Snake gets an **original cartoon grenade launcher**: a distinct, amber FIRE button above START/PAUSE, a 3-grenade magazine, +1 grenade after every 2 food items (maximum 5), +15 score per destroyed destructible crate, and one extra crate spawned after each 3 food items up to a bounded 12. The direction is the last executed movement; the grenade flies up to 8 grid cells, stops on a crate and destroys crates inside a 3×3 region. Misses expend ammunition. The original head/tail mechanics, collision, pause and scoring remain independent from the Android UI.
+
+The explosion uses procedurally drawn particles and visual fade ticks; firing plays a synthetic sound and haptic cue. Bluetooth/USB controller BUTTON_B or R1 fires. No additional permissions, downloaded files or large sprite sheets. See [Snake roadmap](SNAKE-ROADMAP.md) for tested behavior and future ideas.
