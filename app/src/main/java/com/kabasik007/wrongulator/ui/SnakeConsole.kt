@@ -156,6 +156,21 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
         haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
     }
 
+    fun fireGrenade() {
+        if (!running) return
+        if (game.launchGrenade()) {
+            revision++
+            play(SnakeSounds.Cue.BLAST)
+            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+            if (game.score > best) {
+                best = game.score
+                scores.edit().putInt("snake", best).apply()
+            }
+        } else {
+            play(SnakeSounds.Cue.EMPTY)
+        }
+    }
+
     // Vsync pacing for visuals; fixed-step logical movement. No per-frame allocations in SnakeGame.
     // The loop is automatically cancelled when the screen leaves composition.
     LaunchedEffect(running, generation) {
@@ -215,6 +230,7 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
                     AndroidKeyEvent.KEYCODE_DPAD_RIGHT -> move(PadKey.RIGHT)
                     AndroidKeyEvent.KEYCODE_DPAD_UP -> move(PadKey.UP)
                     AndroidKeyEvent.KEYCODE_DPAD_DOWN -> move(PadKey.DOWN)
+                    AndroidKeyEvent.KEYCODE_BUTTON_B, AndroidKeyEvent.KEYCODE_BUTTON_R1 -> fireGrenade()
                     AndroidKeyEvent.KEYCODE_BUTTON_A, AndroidKeyEvent.KEYCODE_ENTER,
                     AndroidKeyEvent.KEYCODE_SPACE, AndroidKeyEvent.KEYCODE_DPAD_CENTER -> mainAction()
                     else -> return@onPreviewKeyEvent false
@@ -405,7 +421,31 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
                 Column(
                     modifier = Modifier.padding(end = 2.dp, bottom = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
                 ) {
+                    Button(
+                        onClick = { fireGrenade() },
+                        enabled = running && game.ammo > 0,
+                        modifier = Modifier
+                            .width((actionSize.value + 20f).dp)
+                            .height((keySize.value * .82f).dp),
+                        shape = RoundedCornerShape(17.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFFFAE72),
+                            contentColor = snakeInk,
+                            disabledContainerColor = snakePanel,
+                            disabledContentColor = snakeMuted,
+                        ),
+                    ) {
+                        Text("💥 ${game.ammo}", fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                    }
+                    Text(
+                        stringResource(R.string.snake_grenade),
+                        color = if (game.ammo > 0) Color(0xFFFFB781) else snakeMuted,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 11.sp,
+                    )
                     Text(
                         stringResource(
                             when {
