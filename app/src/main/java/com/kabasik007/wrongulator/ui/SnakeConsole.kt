@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -69,7 +68,7 @@ import com.kabasik007.wrongulator.arcade.PadKey
 import com.kabasik007.wrongulator.arcade.SnakeEvent
 import com.kabasik007.wrongulator.arcade.SnakeGame
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withFrameNanos
+import androidx.compose.runtime.withFrameNanos
 import kotlin.math.abs
 
 private val snakeInk = Color(0xFF080F1D)
