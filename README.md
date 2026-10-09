@@ -89,3 +89,8 @@ version does not load arbitrary external game code or download APK plugins.
 ## v0.5 — Snake Console 2.0 🐍
 
 The Snake game is upgraded to its own arcade-style console view: professional start/pause/game-over overlays, a larger bottom-right action key (**START → PAUSE → RESUME → RESTART**), separated cross-shaped D-pad, swipe-to-steer, sound toggle, haptic response, keyboard/DPAD input, animated movement/eyes/food and live score/high score. The game clock stops when paused or backgrounded. Sound and score settings are local and require no extra permissions. See [Arcade architecture](docs/ARCADE.md).
+
+
+## v0.6 — Snake Combat 🐍💥
+
+Snake now features an in-game **fictional grenade launcher** and destructible neon obstacles. Tap the amber **💥 FIRE** button above START/PAUSE, or use gamepad B/R1. Three starting grenades; earn additional ammo by eating food, score bonus points for smashed crates, enjoy on-screen explosions and procedural sounds. All the classic gameplay and other apps remain free/offline. [Full roadmap](docs/SNAKE-ROADMAP.md).
