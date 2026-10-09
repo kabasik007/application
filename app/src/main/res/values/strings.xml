@@ -90,4 +90,6 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="snake_intro">Collect the golden orbs. Avoid walls and your own tail.</string>
     <string name="snake_speed">LEVEL</string>
     <string name="snake_hint">Swipe the field or use the D-pad</string>
+    <string name="snake_grenade">GRENADE</string>
+    <string name="snake_combat_hint">Swipe / D-pad · Blast orange crates with 💥</string>
 </resources>
