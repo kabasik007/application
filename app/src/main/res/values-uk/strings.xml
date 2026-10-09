@@ -90,4 +90,6 @@
     <string name="snake_intro">Збирай золоті кульки. Уникай стін та власного хвоста.</string>
     <string name="snake_speed">РІВЕНЬ</string>
     <string name="snake_hint">Свайпай на полі або керуй кнопками</string>
+    <string name="snake_grenade">ГРАНАТА</string>
+    <string name="snake_combat_hint">Свайп / хрестовина · 💥 підриває перешкоди</string>
 </resources>
