@@ -1,5 +1,6 @@
 package com.kabasik007.wrongulator.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -154,6 +155,10 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
     val scores = remember { context.getSharedPreferences("arcade_scores", 0) }
     var best by remember(entry.id) { mutableIntStateOf(scores.getInt(entry.id, 0)) }
     var revision by remember(entry.id) { mutableIntStateOf(0) }
+    var restartGeneration by remember(entry.id) { mutableIntStateOf(0) }
+    val scoreNow = remember(revision) { game.score }
+    val finishedNow = remember(revision) { game.finished }
+    BackHandler { onExit() }
     var paused by rememberSaveable(entry.id) { mutableStateOf(false) }
     var active by remember { mutableStateOf(true) }
     val owner = LocalLifecycleOwner.current
@@ -169,7 +174,7 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
     }
 
     // Exactly one bounded game loop. Leaving the page cancels the coroutine.
-    LaunchedEffect(game, paused, active) {
+    LaunchedEffect(game, paused, active, restartGeneration) {
         while (isActive && active && !paused && !game.finished) {
             delay(game.intervalMs)
             game.tick()
@@ -181,7 +186,7 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
         }
     }
 
-    funInput@ fun dispatch(key: PadKey) {
+    fun dispatch(key: PadKey) {
         if (!paused && active && !game.finished) {
             game.input(key)
             revision++
@@ -197,7 +202,7 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
             TextButton(onClick = onExit) { Text("‹  " + stringResource(R.string.arcade_library)) }
             Text(stringResource(entry.name), fontWeight = FontWeight.ExtraBold,
                 color = consoleWhite, fontSize = 17.sp)
-            TextButton(onClick = { paused = !paused }, enabled = !game.finished) {
+            TextButton(onClick = { paused = !paused }, enabled = !finishedNow) {
                 Text(if (paused) stringResource(R.string.arcade_resume)
                      else stringResource(R.string.arcade_pause))
             }
@@ -206,7 +211,7 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
             Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text("${stringResource(R.string.arcade_score)}  ${game.score}",
+            Text("${stringResource(R.string.arcade_score)}  ${scoreNow}",
                 color = consoleAccent, fontWeight = FontWeight.Bold)
             Text("${stringResource(R.string.arcade_best)}  $best",
                 color = consoleSecondary, fontWeight = FontWeight.Bold)
@@ -245,14 +250,14 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
                 }
                 game.paint(painter)
             }
-            if (paused || game.finished) {
+            if (paused || finishedNow) {
                 Column(
                     modifier = Modifier.background(Color(0xE51A2335), RoundedCornerShape(18.dp))
                         .padding(22.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        stringResource(if (game.finished) R.string.arcade_game_over
+                        stringResource(if (finishedNow) R.string.arcade_game_over
                             else R.string.arcade_paused),
                         fontWeight = FontWeight.Black,
                         fontSize = 26.sp,
@@ -261,6 +266,7 @@ private fun ArcadeSession(entry: ArcadeEntry, onExit: () -> Unit, modifier: Modi
                     Spacer(Modifier.height(10.dp))
                     Button(onClick = {
                         game.reset()
+                        restartGeneration++
                         revision++
                         paused = false
                     }) { Text(stringResource(R.string.arcade_restart)) }
