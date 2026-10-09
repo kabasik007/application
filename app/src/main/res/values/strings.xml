@@ -20,4 +20,23 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="debug_leave_pro">Back to wrong answers</string>
     <string name="paywall_notice">PAYWALL PREVIEW · NO REAL PAYMENTS</string>
     <string name="app_footer">Wrongulator™ · Satire, not financial advice.</string>
+    <string name="parody_result">PARODY · INTENTIONALLY WRONG</string>
+    <string name="error_short">UNAVAILABLE</string>
+    <string name="pro_preview">ACCURATE · DEMO</string>
+    <string name="unlock_accuracy">Unlock accurate results</string>
+    <string name="paywall_eyebrow">WRONGULATOR PRO</string>
+    <string name="paywall_heading">Precision, unlocked.</string>
+    <string name="paywall_subtitle">Choose your access to correct answers.</string>
+    <string name="plan_month">Monthly</string>
+    <string name="plan_month_detail">$1/month · auto-renews</string>
+    <string name="plan_gift">3 months</string>
+    <string name="plan_gift_detail">$2 total for 3 months · then $1/month</string>
+    <string name="free_third_month">3RD MONTH FREE</string>
+    <string name="plan_forever">Lifetime</string>
+    <string name="plan_forever_detail">One-time access · no renewal</string>
+    <string name="paywall_continue">Continue</string>
+    <string name="paywall_disclosure">Pricing preview only · No payments or subscriptions are active. If launched, the 3-month offer would cost $2 for three months, then auto-renew at $1/month until canceled.</string>
+    <string name="billing_demo_title">Payment preview</string>
+    <string name="billing_demo_message">This is a concept screen. No payment is processed or subscription activated. Actual purchases require Google Play Billing.</string>
+    <string name="billing_demo_ok">Close</string>
 </resources>
