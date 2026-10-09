@@ -85,4 +85,9 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="game_moto">Moto Trail</string>
     <string name="moto_about">Jump cones, race across rolling hills.</string>
     <string name="moto_controls">▶ Boost · ◀ Brake · ● Jump</string>
+    <string name="snake_ready">READY, PLAYER ONE?</string>
+    <string name="snake_start">Start game</string>
+    <string name="snake_intro">Collect the golden orbs. Don't hit the walls or yourself.</string>
+    <string name="snake_speed">LEVEL</string>
+    <string name="snake_hint">Swipe the field or use the D-pad</string>
 </resources>
