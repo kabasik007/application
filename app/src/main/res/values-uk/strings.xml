@@ -43,7 +43,7 @@
     <string name="menu_tools">Корисні інструменти</string>
     <string name="menu_about">Про додаток</string>
     <string name="drawer_subtitle">Твої числа. Наша думка.</string>
-    <string name="drawer_footer">v0.3 · Калькулятор — сатира.</string>
+    <string name="drawer_footer">v0.4 · Калькулятор — сатира.</string>
     <string name="tools_title">Корисні інструменти</string>
     <string name="tools_intro">Тут усе рахується правильно. Без підписки.</string>
     <string name="discount_title">Знижка</string>
@@ -61,4 +61,28 @@
     <string name="about_explanation">Wrongulator — сатиричний калькулятор: результати на головному екрані FREE навмисно неправильні. Не використовуйте їх для справжніх обчислень. Тарифи PRO поки лише демонстраційні.</string>
     <string name="about_tools">Потрібні справжні числа? У розділі «Корисні інструменти» знижки та поділ рахунку розраховуються правильно й безкоштовно.</string>
     <string name="about_billing">У цій версії немає справжніх оплат або підписок. Дані нікуди не передаються. Створено для гумору, а не для фінансових рішень.</string>
+    <string name="menu_arcade">Ігротека</string>
+    <string name="arcade_heading">Твоя кишенькова приставка.</string>
+    <string name="arcade_subtitle">Чотири аркади. Без завантажень і реклами.</string>
+    <string name="arcade_play">ГРАТИ</string>
+    <string name="arcade_library">Ігри</string>
+    <string name="arcade_pause">Пауза</string>
+    <string name="arcade_resume">Далі</string>
+    <string name="arcade_restart">Ще раз</string>
+    <string name="arcade_score">ОЧКИ</string>
+    <string name="arcade_best">РЕКОРД</string>
+    <string name="arcade_paused">ПАУЗА</string>
+    <string name="arcade_game_over">ГРУ ЗАВЕРШЕНО</string>
+    <string name="game_snake">Змійка</string>
+    <string name="snake_about">Їж бонуси, рости, уникай стін.</string>
+    <string name="snake_controls">Стрілки: змінити напрямок</string>
+    <string name="game_blocks">Block Drop</string>
+    <string name="blocks_about">Складай фігури, збирай лінії.</string>
+    <string name="blocks_controls">◀ ▶ Рух · ▲ Поворот · ▼ Вниз · ● Скинути</string>
+    <string name="game_balls">Countryballs</string>
+    <string name="balls_about">Уникай кульок, збирай монети.</string>
+    <string name="balls_controls">◀ ▶ Рух · ● Захист</string>
+    <string name="game_moto">Moto Trail</string>
+    <string name="moto_about">Перестрибуй конуси та пагорби.</string>
+    <string name="moto_controls">▶ Газ · ◀ Гальма · ● Стрибок</string>
 </resources>
