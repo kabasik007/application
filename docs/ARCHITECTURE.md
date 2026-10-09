@@ -42,3 +42,7 @@ will be necessary before a store release.
 - Android Gradle Plugin 8.13.2 / Gradle 8.13 / JDK 17
 - compileSdk + targetSdk 36; minSdk 26
 - Gradle version catalog in `gradle/libs.versions.toml`
+
+## v0.2 presentation
+
+A compact full-height Compose calculator anchors the 5-row keypad to the bottom and gives the result flexible height. A new incorrect evaluation triggers one keyframe wobble of the result panel before presenting a Material 3 modal bottom sheet with three price concepts. This is an **illustrative subscription selector**, not an active billing flow. Acknowledge and visually label the intentional parody result even when the screen has minimal copy.
