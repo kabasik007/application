@@ -320,10 +320,10 @@ fun WrongulatorScreen(
                     .windowInsetsPadding(WindowInsets.safeDrawing),
             ) {
                 SubpageHeader(stringResource(destination.title), onMenu)
-                if (destination == AppDestination.TOOLS) {
-                    ToolsScreen(Modifier.weight(1f))
-                } else {
-                    AboutScreen(Modifier.weight(1f))
+                when (destination) {
+                    AppDestination.TOOLS -> ToolsScreen(Modifier.weight(1f))
+                    AppDestination.ARCADE -> ArcadeScreen(Modifier.weight(1f))
+                    else -> AboutScreen(Modifier.weight(1f))
                 }
             }
         }
