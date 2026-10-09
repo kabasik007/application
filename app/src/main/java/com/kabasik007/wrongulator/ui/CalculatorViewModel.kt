@@ -23,7 +23,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     /** Developer-only preview. Must never be wired to a release build. */
-    fun setDebugProPreview(enabled: Boolean) {
+    fun setAccuracyPreviewEnabled(enabled: Boolean) {
         debugProPreview = enabled
         state = CalculatorState()
     }
