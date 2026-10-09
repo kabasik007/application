@@ -380,7 +380,7 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                stringResource(R.string.snake_hint),
+                stringResource(R.string.snake_combat_hint),
                 color = snakeMuted, fontSize = 12.sp,
             )
             Text(if (running) "● LIVE" else "● IDLE", color = if (running) snakeMint else snakeMuted,
