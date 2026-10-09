@@ -15,3 +15,6 @@ Follow the reasoning standards from https://github.com/kabasik007/Appbootstrap.
 - Prefer small commits and bounded app footprint, avoid unnecessary abstractions.
 - For release: require valid keystore and independent Play Billing/entitlement review.
 - Report actual tests and build results; never claim success without evidence.
+
+- The secondary Smart Tools page **must always calculate accurately**, with independently tested pure Kotlin functions; it is free, offline and has no premium entitlement dependency.
+- The intentionally inaccurate primary calculator uses a compact FREE/not accurate label; the About page contains an unambiguous satire warning.

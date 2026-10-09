@@ -20,7 +20,7 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="debug_leave_pro">Back to wrong answers</string>
     <string name="paywall_notice">PAYWALL PREVIEW · NO REAL PAYMENTS</string>
     <string name="app_footer">Wrongulator™ · Satire, not financial advice.</string>
-    <string name="parody_result">PARODY · INTENTIONALLY WRONG</string>
+    <string name="parody_result">FREE · NOT ACCURATE</string>
     <string name="error_short">UNAVAILABLE</string>
     <string name="pro_preview">ACCURATE · DEMO</string>
     <string name="unlock_accuracy">Unlock accurate results</string>
@@ -39,4 +39,26 @@ In this demo no payments are connected, nothing is charged, and there is no acti
     <string name="billing_demo_title">Payment preview</string>
     <string name="billing_demo_message">This is a concept screen. No payment is processed or subscription activated. Actual purchases require Google Play Billing.</string>
     <string name="billing_demo_ok">Close</string>
+    <string name="menu_calculator">Calculator</string>
+    <string name="menu_tools">Smart Tools</string>
+    <string name="menu_about">About</string>
+    <string name="drawer_subtitle">Your math. Our opinion.</string>
+    <string name="drawer_footer">v0.3 · The calculator is satire.</string>
+    <string name="tools_title">Smart Tools</string>
+    <string name="tools_intro">These calculations are genuinely accurate. Free for everyone.</string>
+    <string name="discount_title">Discount</string>
+    <string name="original_price">Original price</string>
+    <string name="discount_percent">Discount %</string>
+    <string name="savings">You save</string>
+    <string name="final_price">New price</string>
+    <string name="split_title">Split a bill</string>
+    <string name="bill_amount">Total bill</string>
+    <string name="tip_percent">Tip %</string>
+    <string name="people_count">People</string>
+    <string name="total_with_tip">Total with tip</string>
+    <string name="per_person">Per person</string>
+    <string name="tools_live_note">Results update automatically. Use any currency; all amounts are in the same currency.</string>
+    <string name="about_explanation">Wrongulator is a satirical calculator: results on the main FREE screen are deliberately wrong and must not be used for real calculations. PRO offers are demonstrations only.</string>
+    <string name="about_tools">Need real numbers? Smart Tools gives you correct discounts and bill splitting, absolutely free.</string>
+    <string name="about_billing">No payments or subscriptions are active in this build. No data is sent to a server. Made for laughs — not for financial decisions.</string>
 </resources>

@@ -20,7 +20,7 @@
     <string name="debug_leave_pro">Назад до неправди</string>
     <string name="paywall_notice">ДЕМО ПІДПИСКИ · БЕЗ СПИСАНЬ</string>
     <string name="app_footer">Wrongulator™ · Сатира, не фінансова порада.</string>
-    <string name="parody_result">ЖАРТ · НАВМИСНО НЕПРАВИЛЬНО</string>
+    <string name="parody_result">FREE · НЕТОЧНО</string>
     <string name="error_short">НЕДОСТУПНО</string>
     <string name="pro_preview">ТОЧНО · ДЕМО</string>
     <string name="unlock_accuracy">Розблокувати точні результати</string>
@@ -39,4 +39,26 @@
     <string name="billing_demo_title">Демонстрація оплати</string>
     <string name="billing_demo_message">Це концепт екрана підписки. Гроші не списуються, підписка не активується. Для реальних покупок потрібен Google Play Billing.</string>
     <string name="billing_demo_ok">Закрити</string>
+    <string name="menu_calculator">Калькулятор</string>
+    <string name="menu_tools">Корисні інструменти</string>
+    <string name="menu_about">Про додаток</string>
+    <string name="drawer_subtitle">Твої числа. Наша думка.</string>
+    <string name="drawer_footer">v0.3 · Калькулятор — сатира.</string>
+    <string name="tools_title">Корисні інструменти</string>
+    <string name="tools_intro">Тут усе рахується правильно. Без підписки.</string>
+    <string name="discount_title">Знижка</string>
+    <string name="original_price">Початкова ціна</string>
+    <string name="discount_percent">Знижка, %</string>
+    <string name="savings">Економія</string>
+    <string name="final_price">Нова ціна</string>
+    <string name="split_title">Розділити рахунок</string>
+    <string name="bill_amount">Сума рахунку</string>
+    <string name="tip_percent">Чайові, %</string>
+    <string name="people_count">Людей</string>
+    <string name="total_with_tip">Разом з чайовими</string>
+    <string name="per_person">З кожного</string>
+    <string name="tools_live_note">Результати оновлюються автоматично. Можна використовувати будь-яку валюту.</string>
+    <string name="about_explanation">Wrongulator — сатиричний калькулятор: результати на головному екрані FREE навмисно неправильні. Не використовуйте їх для справжніх обчислень. Тарифи PRO поки лише демонстраційні.</string>
+    <string name="about_tools">Потрібні справжні числа? У розділі «Корисні інструменти» знижки та поділ рахунку розраховуються правильно й безкоштовно.</string>
+    <string name="about_billing">У цій версії немає справжніх оплат або підписок. Дані нікуди не передаються. Створено для гумору, а не для фінансових рішень.</string>
 </resources>
