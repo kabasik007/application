@@ -49,3 +49,14 @@ The workflow installs pinned Gradle. A binary Gradle Wrapper is not yet bundled.
 ### Subscription note
 
 Real Google Play subscriptions require a properly configured Play Console monthly product, localized pricing, secure purchase verification, cancellation/restore support, and compliance review. They **cannot** be made real simply by writing "$1/month" on a button. The app discloses that its free results are deliberate jokes.
+
+
+## v0.3 — drawer & genuinely useful tools
+
+Use the ☰ icon (or swipe from the left edge) to open the side drawer. It has three pages:
+
+- **Calculator:** our deliberately inaccurate free meme calculator, presented with a clean story-friendly layout and a subtle `FREE · NOT ACCURATE` label.
+- **Smart Tools:** genuinely accurate discount (price + %) and split-bill (bill + tip + guests) calculators. Always free and fully offline.
+- **About:** transparent explanation of the satirical calculator and mock billing.
+
+The FREE result still triggers the animated mock subscription offer. There are no real purchases. The right side of the UI remains compact enough for portrait videos.
