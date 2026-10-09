@@ -38,3 +38,46 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
+
+  preview-release:
+    name: Publish v0.1.0 preview
+    needs: android
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    timeout-minutes: 10
+    steps:
+      - name: Download verified build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wrongulator-debug-apk
+          path: release
+      - name: Prepare preview APK and SHA-256 digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mv release/app-debug.apk release/Wrongulator-v0.1.0-preview.1-debug.apk
+          cd release
+          sha256sum Wrongulator-v0.1.0-preview.1-debug.apk > SHA256SUMS
+      - name: Publish installable GitHub pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v0.1.0-preview.1"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release already exists; not replacing published binaries."
+            exit 0
+          fi
+          gh release create "$TAG" \
+            "release/Wrongulator-v0.1.0-preview.1-debug.apk" \
+            "release/SHA256SUMS" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$HEAD_SHA" \
+            --title "Wrongulator v0.1.0 — first Android preview" \
+            --notes "First installable Android preview. Free results are intentionally wrong as a joke. This is a DEBUG-signed test APK only; NOT an update-stable or production-signed package. The $1/month paywall is a mockup and charges nothing. For future stable releases a permanent keystore and verified billing are required." \
+            --prerelease
