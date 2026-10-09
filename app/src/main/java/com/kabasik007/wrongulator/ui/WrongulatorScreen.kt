@@ -122,7 +122,7 @@ fun WrongulatorScreen(
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier.clickable {
                         if (accurate && allowDebugPreview) {
-                            viewModel.setDebugProPreview(false)
+                            viewModel.setAccuracyPreviewEnabled(false)
                         } else {
                             showPaywall = true
                         }
@@ -196,7 +196,7 @@ fun WrongulatorScreen(
             Surface(
                 modifier = Modifier.fillMaxWidth().clickable {
                     if (accurate && allowDebugPreview) {
-                        viewModel.setDebugProPreview(false)
+                        viewModel.setAccuracyPreviewEnabled(false)
                     } else {
                         showPaywall = true
                     }
@@ -295,7 +295,7 @@ fun WrongulatorScreen(
                     if (allowDebugPreview) {
                         TextButton(
                             onClick = {
-                                viewModel.setDebugProPreview(true)
+                                viewModel.setAccuracyPreviewEnabled(true)
                                 showPaywall = false
                             },
                         ) {

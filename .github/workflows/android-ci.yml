@@ -15,22 +15,22 @@ jobs:
     timeout-minutes: 35
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
       - name: Install Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
       - name: Android platform
-        run: sdkmanager "platforms;android-36"
+        run: sdkmanager "platforms;android-36" "build-tools;35.0.0"
       - name: Pinned Gradle 8.13
         uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: "8.13"
       - name: Unit tests, Android lint, debug APK
-        run: gradle :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --stacktrace
+        run: gradle --no-daemon :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --stacktrace
       - name: Upload APK for installing on phone
         uses: actions/upload-artifact@v4
         with:
@@ -38,3 +38,46 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
+
+  preview-release:
+    name: Publish v0.1.0 preview
+    needs: android
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    timeout-minutes: 10
+    steps:
+      - name: Download verified build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wrongulator-debug-apk
+          path: release
+      - name: Prepare preview APK and SHA-256 digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mv release/app-debug.apk release/Wrongulator-v0.1.0-preview.1-debug.apk
+          cd release
+          sha256sum Wrongulator-v0.1.0-preview.1-debug.apk > SHA256SUMS
+      - name: Publish installable GitHub pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v0.1.0-preview.1"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release already exists; not replacing published binaries."
+            exit 0
+          fi
+          gh release create "$TAG" \
+            "release/Wrongulator-v0.1.0-preview.1-debug.apk" \
+            "release/SHA256SUMS" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$HEAD_SHA" \
+            --title "Wrongulator v0.1.0 — first Android preview" \
+            --notes "First installable Android preview. Free results are intentionally wrong as a joke. This is a DEBUG-signed test APK only; NOT an update-stable or production-signed package. The $1/month paywall is a mockup and charges nothing. For future stable releases a permanent keystore and verified billing are required." \
+            --prerelease
