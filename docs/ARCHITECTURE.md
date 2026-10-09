@@ -46,3 +46,7 @@ will be necessary before a store release.
 ## v0.2 presentation
 
 A compact full-height Compose calculator anchors the 5-row keypad to the bottom and gives the result flexible height. A new incorrect evaluation triggers one keyframe wobble of the result panel before presenting a Material 3 modal bottom sheet with three price concepts. This is an **illustrative subscription selector**, not an active billing flow. Acknowledge and visually label the intentional parody result even when the screen has minimal copy.
+
+## v0.3 navigation & practical utilities
+
+A native Material3 ModalNavigationDrawer contains Calculator, Smart Tools, and About. ToolsScreen is a separate Compose screen. PracticalMath is a standalone pure Kotlin object with discounts and bill splitting; corresponding JVM tests verify rounding, input validation and zero guest rejection. The tools never use the deliberately incorrect CalculatorMath.parody() method and cannot be restricted by the mock paywall. Navigating preserves calculator state and form contents via ViewModel and rememberSaveable respectively.
