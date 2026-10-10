@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -126,7 +125,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
         onDispose { lifecycle.lifecycle.removeObserver(listener) }
     }
     LaunchedEffect(Unit) { focus.requestFocus() }
-    LaunchedEffect(countdown) {
+    LaunchedEffect(countdown, paused, foreground) {
         if (countdown > 0 && !paused && foreground) {
             delay(1_000)
             countdown--
