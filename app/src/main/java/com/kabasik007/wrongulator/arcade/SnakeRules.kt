@@ -54,7 +54,7 @@ object SnakePalette {
         SnakeSkin.HIGH_CONTRAST -> 0xFFFFFFFF.toInt()
     }
     fun head(skin: SnakeSkin): Int = when (skin) {
-        SnakeSkin.MINT -> 0xFFC0FFE8.toInt()
+        SnakeSkin.MINT -> 0xFFB6FFE0.toInt()
         SnakeSkin.GOLD -> 0xFFFFFFB0.toInt()
         SnakeSkin.VIOLET -> 0xFFE6DAFF.toInt()
         SnakeSkin.HIGH_CONTRAST -> 0xFFFFFF00.toInt()
