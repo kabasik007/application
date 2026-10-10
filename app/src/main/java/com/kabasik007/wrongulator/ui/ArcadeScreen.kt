@@ -105,7 +105,7 @@ fun ArcadeScreen(modifier: Modifier = Modifier) {
     if (selected == null) {
         ArcadeLibrary(modifier, onPlay = { selectedId = it })
     } else if (selected.id == "snake") {
-        SnakeConsole(onExit = { selectedId = null }, modifier = modifier)
+        SnakeUltimateConsole(onExit = { selectedId = null }, modifier = modifier)
     } else {
         ArcadeSession(entry = selected, onExit = { selectedId = null }, modifier = modifier)
     }
