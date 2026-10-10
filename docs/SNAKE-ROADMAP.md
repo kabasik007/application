@@ -66,3 +66,22 @@ New pure-Kotlin systems:
 Implemented: ideas 1–17 in locally testable scope, with device-QA caveats for frame rate, landscape, replays and SoundPool. For #13, a new SoundPool bank generates tiny original WAV clips in app cache on a background dispatcher and falls back to the previous native tones while buffers load; perceived latency and mixing still require real-device audio QA. For #18, **local** best scores exist; an actual online leaderboard is **not present** and will not be claimed until an opt-in remote API, moderation/rate limiting, consent, and anti-cheat verification are deployed.
 
 The reproducible replay is a seed and compact input trace. Share is opt-in through Android's standard share sheet. It is not a video capture feature. Native 30/60 FPS selection throttles visual repaints; it does not change the simulation clock. Landscape uses an alternative board + side-controls layout. Phone/controller/device QA and replay mismatch edge cases remain to be verified.
+
+
+## v0.7.1 — Android phone usability hotfix
+
+Reported using an actual Android screenshot: the 5-second `Get ready` dialog
+blocked input, directional tiles appeared disabled, duplicate parent `Ігротека`
+toolbar wasted vertical space and the board was too small.
+
+Implemented:
+- [x] Begin automatically after a single ~900 ms visual transition; no 5-to-1 countdown or `Get ready` overlay.
+- [x] Big bottom-right START skips warmup immediately, then becomes PAUSE/RESUME/RESTART.
+- [x] Arrows accept touches even during transition, with a two-turn queue validated by pure JVM tests.
+- [x] Larger (at least 54 dp) touch areas, brighter arrows, clickable center PAUSE key.
+- [x] D-pad/screen swipe callbacks always refer to current game state.
+- [x] Full-width controller row, avoid accidentally measuring the board against a full-height sibling.
+- [x] Hide redundant parent Arcade header during active game; remove nested insets from Snake.
+- [x] Give remaining vertical space to the portrait game field; compact HUD and board margins.
+- [x] No new permissions or heavy artwork.
+- [ ] On-device touch, talkback, multiple resolution, controller latency and FPS QA still required.
