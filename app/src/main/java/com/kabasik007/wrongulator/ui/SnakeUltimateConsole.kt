@@ -98,7 +98,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
     var generation by remember { mutableIntStateOf(0) }
     var replay by remember { mutableStateOf<SnakeReplay?>(null) }
     var replayCursor by remember { mutableIntStateOf(0) }
-    val sounds = remember { SnakeSounds() }
+    val sounds = remember(context) { SnakeAudioBank(context) }
     val lifecycle = LocalLifecycleOwner.current
     val focus = remember { FocusRequester() }
     val haptics = LocalHapticFeedback.current
@@ -109,6 +109,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
 
     BackHandler { onExit() }
     DisposableEffect(sounds) { onDispose { sounds.close() } }
+    LaunchedEffect(sounds) { sounds.prepare() }
     DisposableEffect(lifecycle) {
         foreground = lifecycle.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
         val listener = LifecycleEventObserver { _, event ->
