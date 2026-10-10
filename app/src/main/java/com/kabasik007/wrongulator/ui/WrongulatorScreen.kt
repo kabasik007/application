@@ -116,6 +116,7 @@ fun WrongulatorScreen(
     var handledTrigger by rememberSaveable { mutableIntStateOf(viewModel.paywallTrigger) }
     val selected = Plan.valueOf(selectedName)
     val wobble = remember { Animatable(0f) }
+    var arcadePlaying by remember { mutableStateOf(false) }
     var destinationName by rememberSaveable { mutableStateOf(AppDestination.CALCULATOR.name) }
     val destination = AppDestination.valueOf(destinationName)
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -319,10 +320,15 @@ fun WrongulatorScreen(
                 modifier = Modifier.fillMaxSize().background(ink)
                     .windowInsetsPadding(WindowInsets.safeDrawing),
             ) {
-                SubpageHeader(stringResource(destination.title), onMenu)
+                if (destination != AppDestination.ARCADE || !arcadePlaying) {
+                    SubpageHeader(stringResource(destination.title), onMenu)
+                }
                 when (destination) {
                     AppDestination.TOOLS -> ToolsScreen(Modifier.weight(1f))
-                    AppDestination.ARCADE -> ArcadeScreen(Modifier.weight(1f))
+                    AppDestination.ARCADE -> ArcadeScreen(
+                        Modifier.weight(1f),
+                        onPlayingChange = { arcadePlaying = it },
+                    )
                     else -> AboutScreen(Modifier.weight(1f))
                 }
             }

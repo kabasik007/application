@@ -1,12 +1,15 @@
 package com.kabasik007.wrongulator.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,8 +23,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -30,9 +38,15 @@ import com.kabasik007.wrongulator.R
 import com.kabasik007.wrongulator.arcade.PadKey
 import com.kabasik007.wrongulator.arcade.SnakeWeapon
 
+private val keyBase = Color(0xFF29445D)
+private val keyBorder = Color(0xFF4F7896)
+private val keyText = Color(0xFFF6FDFF)
+private val actionMint = Color(0xFF81E6BD)
+
 /**
- * Independent controller component. The handedness preference swaps left/right
- * controls; gameplay, scoring and UI shell do not know about layout details.
+ * Every directional tile is a clickable 54–68 dp surface, including the center.
+ * The D-pad works during the 1-second startup transition, queuing a turn in
+ * the independent simulation rather than silently discarding input.
  */
 @Composable
 internal fun SnakeControlPanel(
@@ -48,28 +62,26 @@ internal fun SnakeControlPanel(
     onMain: () -> Unit,
     onWeapon: () -> Unit,
 ) {
-    BoxWithConstraints {
-        val widthDp = maxWidth.value
-        val key = (widthDp * .163f).coerceIn(42f, 58f).dp
-        val action = (widthDp * .212f).coerceIn(62f, 78f).dp
-        val controls: @Composable () -> Unit = {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        // Tiles scale with width but don't shrink below Android's comfortable touch target.
+        val key = (maxWidth.value * .175f).coerceIn(54f, 68f).dp
+        val action = (maxWidth.value * .205f).coerceIn(66f, 80f).dp
+        val gap = 3.dp
+        val pad: @Composable () -> Unit = {
+            Column(verticalArrangement = Arrangement.spacedBy(gap)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(gap)) {
                     Spacer(Modifier.size(key))
-                    DirectionButton("▲", key, active) { onDirection(PadKey.UP) }
+                    SnakeDpadKey("▲", key, active, "Up") { onDirection(PadKey.UP) }
                     Spacer(Modifier.size(key))
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    DirectionButton("◀", key, active) { onDirection(PadKey.LEFT) }
-                    Box(
-                        Modifier.size(key).background(Color(0xFF203649), RoundedCornerShape(12.dp)),
-                        contentAlignment = Alignment.Center,
-                    ) { Text("✚", fontSize = 20.sp, color = Color(0xFF9EBDCB)) }
-                    DirectionButton("▶", key, active) { onDirection(PadKey.RIGHT) }
+                Row(horizontalArrangement = Arrangement.spacedBy(gap)) {
+                    SnakeDpadKey("◀", key, active, "Left") { onDirection(PadKey.LEFT) }
+                    SnakeDpadKey("Ⅱ", key, true, "Pause or resume", center = true, onClick = onMain)
+                    SnakeDpadKey("▶", key, active, "Right") { onDirection(PadKey.RIGHT) }
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(gap)) {
                     Spacer(Modifier.size(key))
-                    DirectionButton("▼", key, active) { onDirection(PadKey.DOWN) }
+                    SnakeDpadKey("▼", key, active, "Down") { onDirection(PadKey.DOWN) }
                     Spacer(Modifier.size(key))
                 }
             }
@@ -77,55 +89,69 @@ internal fun SnakeControlPanel(
         val actions: @Composable () -> Unit = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(3.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
-                TextButton(onClick = onWeapon, enabled = canFire) {
+                TextButton(
+                    onClick = onWeapon,
+                    enabled = canFire,
+                    modifier = Modifier.height(36.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        horizontal = 8.dp, vertical = 0.dp,
+                    ),
+                ) {
                     Text(
                         when (weapon) {
-                            SnakeWeapon.GRENADE -> "💥 1"
-                            SnakeWeapon.BOUNCE -> "↪ 2"
-                            SnakeWeapon.CHAIN -> "⚡ 3"
+                            SnakeWeapon.GRENADE -> "💥 GRENADE"
+                            SnakeWeapon.BOUNCE -> "↪ BOUNCE"
+                            SnakeWeapon.CHAIN -> "⚡ CHAIN"
                         },
-                        color = Color(0xFFFFC08B), fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFFCB96),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.ExtraBold,
                     )
                 }
                 Button(
                     onClick = onFire,
                     enabled = active && canFire && ammo > 0,
-                    modifier = Modifier.width(action + 15.dp).height(key * .85f),
+                    modifier = Modifier.width(action + 20.dp).height(49.dp),
                     shape = RoundedCornerShape(17.dp),
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFFB879),
-                        contentColor = Color(0xFF07111B),
+                        containerColor = Color(0xFFFFB67C),
+                        contentColor = Color(0xFF092030),
+                        disabledContainerColor = Color(0xFF293442),
+                        disabledContentColor = Color(0xFFA6AFC0),
                     ),
-                ) { Text("💥 $ammo", fontWeight = FontWeight.Black, fontSize = 18.sp) }
-                Text(stringResource(mainLabel), color = Color(0xFF81E6BD),
-                    fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                ) { Text("💥 $ammo", fontSize = 20.sp, fontWeight = FontWeight.Black) }
+                Text(
+                    stringResource(mainLabel),
+                    color = actionMint,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                )
                 Button(
                     onClick = onMain,
                     modifier = Modifier.size(action),
                     shape = CircleShape,
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF81E6BD),
-                        contentColor = Color(0xFF061422),
+                        containerColor = actionMint,
+                        contentColor = Color(0xFF061625),
                     ),
-                ) { Text(mainSymbol, fontSize = 27.sp, fontWeight = FontWeight.Black) }
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+                ) { Text(mainSymbol, fontSize = 30.sp, fontWeight = FontWeight.Black) }
             }
         }
         Row(
-            modifier = Modifier.padding(bottom = 4.dp),
-            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
         ) {
             if (leftHanded) {
                 actions()
                 Spacer(Modifier.weight(1f))
-                controls()
+                pad()
             } else {
-                controls()
+                pad()
                 Spacer(Modifier.weight(1f))
                 actions()
             }
@@ -134,16 +160,35 @@ internal fun SnakeControlPanel(
 }
 
 @Composable
-private fun DirectionButton(label: String, size: Dp, enabled: Boolean, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        enabled = enabled,
-        modifier = Modifier.size(size),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
-        shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF17263A),
-            contentColor = Color(0xFFF4FAFF),
-        ),
-    ) { Text(label, fontSize = 22.sp, fontWeight = FontWeight.Bold) }
+private fun SnakeDpadKey(
+    symbol: String,
+    size: Dp,
+    enabled: Boolean,
+    label: String,
+    center: Boolean = false,
+    onClick: () -> Unit,
+) {
+    val shape = RoundedCornerShape(if (center) 18.dp else 15.dp)
+    val background = if (center) Color(0xFF1F6E78) else keyBase
+    Box(
+        modifier = Modifier
+            .size(size)
+            .clip(shape)
+            .background(
+                Brush.verticalGradient(
+                    listOf(background.copy(alpha = if (enabled) 1f else .45f),
+                        background.copy(alpha = if (enabled) .84f else .34f)),
+                ),
+            )
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
+            .semantics { contentDescription = label },
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            symbol,
+            color = if (enabled) keyText else Color(0xFF9CA9B8),
+            fontWeight = FontWeight.Black,
+            fontSize = if (center) 24.sp else 30.sp,
+        )
+    }
 }

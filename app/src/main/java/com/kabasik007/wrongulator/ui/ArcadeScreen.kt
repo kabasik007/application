@@ -98,8 +98,12 @@ private val catalog = listOf(
 )
 
 @Composable
-fun ArcadeScreen(modifier: Modifier = Modifier) {
+fun ArcadeScreen(
+    modifier: Modifier = Modifier,
+    onPlayingChange: (Boolean) -> Unit = {},
+) {
     var selectedId by rememberSaveable { mutableStateOf<String?>(null) }
+    LaunchedEffect(selectedId) { onPlayingChange(selectedId != null) }
     // Back while playing returns to the catalog, not the external calculator.
     val selected = catalog.firstOrNull { it.id == selectedId }
     if (selected == null) {

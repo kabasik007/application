@@ -105,3 +105,14 @@ countdown and compact input-code replays. Snake's systems stay in individual
 Kotlin files rather than a single large activity. UI has an independent
 settings sheet, reusable controls and playfield. More details and limitations
 in [Snake roadmap](docs/SNAKE-ROADMAP.md).
+
+
+## v0.7.1 — Snake usability release
+
+Based on a real phone screenshot: removed the five-second readiness overlay, now
+auto-starts after a ~1-second animated board reveal. Directional controls accept
+input immediately with a safe two-turn buffer, and the D-pad has large clickable
+high-contrast directional surfaces plus a clickable pause center. The arcade's
+duplicate parent toolbar is hidden in-game and the game board receives the
+remaining height. Android unit tests and CI validate the logic; real-device
+interaction is still being tested.
