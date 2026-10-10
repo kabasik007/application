@@ -94,3 +94,14 @@ The Snake game is upgraded to its own arcade-style console view: professional st
 ## v0.6 — Snake Combat 🐍💥
 
 Snake now features an in-game **fictional grenade launcher** and destructible neon obstacles. Tap the amber **💥 FIRE** button above START/PAUSE, or use gamepad B/R1. Three starting grenades; earn additional ammo by eating food, score bonus points for smashed crates, enjoy on-screen explosions and procedural sounds. All the classic gameplay and other apps remain free/offline. [Full roadmap](docs/SNAKE-ROADMAP.md).
+
+
+## v0.7 — Snake Ultimate
+
+Modes (Classic, Combat, Zen, Time Attack), difficulty, four maps, four skins,
+combo/power-ups, three grenade variants, 1–3 AI rivals, a multi-hit boss,
+missions, local achievements and best scores, accessibility controls, a practice
+countdown and compact input-code replays. Snake's systems stay in individual
+Kotlin files rather than a single large activity. UI has an independent
+settings sheet, reusable controls and playfield. More details and limitations
+in [Snake roadmap](docs/SNAKE-ROADMAP.md).
