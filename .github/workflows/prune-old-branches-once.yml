@@ -1,0 +1,77 @@
+name: One-time obsolete branch cleanup
+
+# Intentionally narrow. The job runs once on the merge that introduces this file,
+# validates each old branch against an already-merged PR, and then deletes it.
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/prune-old-branches-once.yml
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  prune:
+    if: startsWith(github.event.head_commit.message, 'chore: schedule one-time branch cleanup')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Retain main and Snake v0.7.2; delete only merged unchanged branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const keep = new Set([
+              'main',
+              'fix/snake-wall-wrap-v0.7.2',
+            ]);
+            // These heads were individually inspected and all source PRs merged.
+            const obsolete = [
+              {name:'fix/android-ci-v0.1', pr:1},
+              {name:'feat/modern-paywall-promo', pr:2},
+              {name:'feat/drawer-and-useful-tools', pr:3},
+              {name:'feat/arcade-console-v0.4', pr:4},
+              {name:'feat/snake-console-v0.5', pr:5},
+              {name:'feat/snake-grenade-v0.6', pr:6},
+              {name:'feat/snake-ultimate-v0.7', pr:7},
+              {name:'fix/snake-controls-layout-v0.7.1', pr:8},
+              {name:'chore/prune-old-branches-once', pr:10},
+            ];
+            const all = await github.paginate(github.rest.repos.listBranches,
+              {owner, repo, per_page:100});
+            const actual = new Set(all.map(b => b.name));
+            if (![...keep].every(x => actual.has(x))) {
+              throw new Error('Required keep branches missing; aborting');
+            }
+            const unrecognized = [...actual].filter(
+              name => !keep.has(name) && !obsolete.some(x => x.name === name));
+            if (unrecognized.length) {
+              throw new Error('Unrecognized branches; no deletions: ' + unrecognized.join(', '));
+            }
+
+            // Preflight all branch heads before ANY deletion. A merged squash PR's
+            // head is still the same SHA as its old feature branch.
+            for (const item of obsolete) {
+              if (!actual.has(item.name)) continue;
+              const [branch, pr] = await Promise.all([
+                github.rest.repos.getBranch({owner, repo, branch:item.name}),
+                github.rest.pulls.get({owner, repo, pull_number:item.pr}),
+              ]);
+              if (pr.data.merged_at == null ||
+                  pr.data.base.ref !== 'main' ||
+                  pr.data.head.ref !== item.name ||
+                  pr.data.head.sha !== branch.data.commit.sha ||
+                  branch.data.protected) {
+                throw new Error('Unsafe or changed branch, aborting: ' + item.name);
+              }
+            }
+            for (const item of obsolete) {
+              if (!actual.has(item.name)) continue;
+              await github.rest.git.deleteRef({
+                owner, repo, ref:'heads/' + item.name,
+              });
+              core.info('Deleted merged branch: ' + item.name);
+            }
+            core.info('Kept: main, fix/snake-wall-wrap-v0.7.2');
