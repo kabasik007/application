@@ -24,12 +24,14 @@ class ArcadeContractTest {
         }
     }
 
-    @Test fun snakeHitsTheWallAndResetRestarts() {
-        val game = SnakeGame(Random(12))
-        repeat(24) { game.tick() }
-        assertTrue(game.finished)
+    @Test fun snakeCrossesTheWallAndResetRestarts() {
+        val game = SnakeGame(Random(12), SnakeRules(mode = SnakeMode.CLASSIC))
+        repeat(12) { game.tick() }
+        assertFalse(game.finished)
+        assertEquals(GridCell(0, 13), game.body.first())
         game.reset()
         assertFalse(game.finished)
+        assertEquals(GridCell(8, 13), game.body.first())
     }
 
     @Test fun blockDropHardDropLocksAndProducesNextShape() {
