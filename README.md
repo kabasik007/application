@@ -116,3 +116,8 @@ high-contrast directional surfaces plus a clickable pause center. The arcade's
 duplicate parent toolbar is hidden in-game and the game board receives the
 remaining height. Android unit tests and CI validate the logic; real-device
 interaction is still being tested.
+
+
+## v0.7.2 — Snake wall wrap
+
+All Snake modes now pass through the four arena walls: leaving right re-enters left; top re-enters bottom, and vice versa. The animated segments seamlessly split at the borders, without sweeping across the arena. You can still lose if the destination contains your body or a hazard. All other Wrongulator modes are unchanged.

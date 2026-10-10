@@ -77,32 +77,69 @@ internal object SnakeVisuals {
         for (index in game.body.indices.reversed()) {
             val cell = game.body.elementAt(index)
             val previous = game.previousBody.getOrNull(index) ?: oldTail
-            val x = previous.x + (cell.x - previous.x) * t
-            val y = previous.y + (cell.y - previous.y) * t
+
+            // Crossing an arena edge is a one-cell movement, not a 19- or
+            // 25-cell dash across the screen. Render both clipped halves of
+            // the segment so it smoothly exits one edge and enters the other.
+            val wrapRight = previous.x == 19 && cell.x == 0 && previous.y == cell.y
+            val wrapLeft = previous.x == 0 && cell.x == 19 && previous.y == cell.y
+            val wrapDown = previous.y == 25 && cell.y == 0 && previous.x == cell.x
+            val wrapUp = previous.y == 0 && cell.y == 25 && previous.x == cell.x
+            val discontinuity = (kotlin.math.abs(cell.x - previous.x) > 1 &&
+                !wrapRight && !wrapLeft) ||
+                (kotlin.math.abs(cell.y - previous.y) > 1 && !wrapUp && !wrapDown)
+
+            // Separate, distant teleport portals intentionally snap instead
+            // of interpolating a long, confusing line across the arena.
+            val x = when {
+                discontinuity -> if (t < .5f) previous.x.toFloat() else cell.x.toFloat()
+                wrapRight -> previous.x.toFloat() + t
+                wrapLeft -> previous.x.toFloat() - t
+                else -> previous.x + (cell.x - previous.x) * t
+            }
+            val y = when {
+                discontinuity -> if (t < .5f) previous.y.toFloat() else cell.y.toFloat()
+                wrapDown -> previous.y.toFloat() + t
+                wrapUp -> previous.y.toFloat() - t
+                else -> previous.y + (cell.y - previous.y) * t
+            }
             val isHead = index == 0
-            painter.box(x + .025f, y + .095f, .95f, .88f, 0xFF173E3B.toInt())
-            painter.box(x + .085f, y + .085f, .83f, .83f,
-                if (isHead && game.finished) ArcadeColors.red
-                else if (isHead) SnakePalette.head(game.rules.skin)
-                else SnakePalette.body(game.rules.skin))
-            if (isHead) {
-                if (game.activePower == SnakePower.SHIELD) {
-                    painter.disc(x + .5f, y + .5f, .66f, 0x6681E6BD)
-                }
-                val eyeX = when (game.direction) {
-                    PadKey.LEFT -> -.16f
-                    PadKey.RIGHT -> .16f
+            val duplicates = if (wrapRight || wrapLeft || wrapDown || wrapUp) 2 else 1
+            for (copy in 0 until duplicates) {
+                val px = x + if (copy == 1) when {
+                    wrapRight -> -20f
+                    wrapLeft -> 20f
                     else -> 0f
-                }
-                val eyeY = when (game.direction) {
-                    PadKey.UP -> -.16f
-                    PadKey.DOWN -> .16f
+                } else 0f
+                val py = y + if (copy == 1) when {
+                    wrapDown -> -26f
+                    wrapUp -> 26f
                     else -> 0f
+                } else 0f
+                painter.box(px + .025f, py + .095f, .95f, .88f, 0xFF173E3B.toInt())
+                painter.box(px + .085f, py + .085f, .83f, .83f,
+                    if (isHead && game.finished) ArcadeColors.red
+                    else if (isHead) SnakePalette.head(game.rules.skin)
+                    else SnakePalette.body(game.rules.skin))
+                if (isHead) {
+                    if (game.activePower == SnakePower.SHIELD) {
+                        painter.disc(px + .5f, py + .5f, .66f, 0x6681E6BD)
+                    }
+                    val eyeX = when (game.direction) {
+                        PadKey.LEFT -> -.16f
+                        PadKey.RIGHT -> .16f
+                        else -> 0f
+                    }
+                    val eyeY = when (game.direction) {
+                        PadKey.UP -> -.16f
+                        PadKey.DOWN -> .16f
+                        else -> 0f
+                    }
+                    painter.disc(px + .34f + eyeX, py + .36f + eyeY, .095f, ArcadeColors.backdrop)
+                    painter.disc(px + .67f + eyeX, py + .36f + eyeY, .095f, ArcadeColors.backdrop)
+                } else if (game.combo >= 3 && index % 3 == 0) {
+                    painter.disc(px + .5f, py + .5f, .12f, ArcadeColors.orange)
                 }
-                painter.disc(x + .34f + eyeX, y + .36f + eyeY, .095f, ArcadeColors.backdrop)
-                painter.disc(x + .67f + eyeX, y + .36f + eyeY, .095f, ArcadeColors.backdrop)
-            } else if (game.combo >= 3 && index % 3 == 0) {
-                painter.disc(x + .5f, y + .5f, .12f, ArcadeColors.orange)
             }
         }
 

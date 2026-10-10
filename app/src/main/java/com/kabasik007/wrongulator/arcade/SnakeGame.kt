@@ -181,9 +181,10 @@ class SnakeGame(
             else -> GridCell(head.x, head.y + 1)
         }
 
-        if (rules.map == SnakeMap.WRAP || rules.isInvincible) {
-            next = GridCell((next.x + 20) % 20, (next.y + 26) % 26)
-        }
+        // Every Snake mode uses wraparound edges: leaving one side enters
+        // from the opposite side. Obstacles, body and hazards still collide.
+        next = GridCell((next.x + width.toInt()) % width.toInt(),
+            (next.y + height.toInt()) % height.toInt())
         if (rules.map == SnakeMap.PORTALS) {
             next = when (next) {
                 GridCell(1, 3) -> GridCell(18, 22)

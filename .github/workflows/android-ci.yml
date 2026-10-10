@@ -40,7 +40,7 @@ jobs:
           retention-days: 14
 
   preview-release:
-    name: Publish v0.7.1 preview
+    name: Publish v0.7.2 preview
     needs: android
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -58,9 +58,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mv release/app-debug.apk release/Wrongulator-v0.7.1-preview.1-debug.apk
+          mv release/app-debug.apk release/Wrongulator-v0.7.2-preview.1-debug.apk
           cd release
-          sha256sum Wrongulator-v0.7.1-preview.1-debug.apk > SHA256SUMS
+          sha256sum Wrongulator-v0.7.2-preview.1-debug.apk > SHA256SUMS
       - name: Publish installable GitHub pre-release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -68,16 +68,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          TAG="v0.7.1-preview.1"
+          TAG="v0.7.2-preview.1"
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "Release already exists; not replacing published binaries."
             exit 0
           fi
           gh release create "$TAG" \
-            "release/Wrongulator-v0.7.1-preview.1-debug.apk" \
+            "release/Wrongulator-v0.7.2-preview.1-debug.apk" \
             "release/SHA256SUMS" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$HEAD_SHA" \
-            --title "Wrongulator v0.7.1 — first Android preview" \
-            --notes "Snake Ultimate controller hotfix: larger full-height playfield, reliable high-contrast D-pad, two-turn input buffer, 1-second automatic start without countdown dialog, and parent-header cleanup. Snake Console 2.0 controls remain intact. Other arcade games and calculator are intact. Calculator and utility tools preserved. Free results are intentionally wrong as a joke. This is a DEBUG-signed test APK only; NOT an update-stable or production-signed package. The $1/month paywall is a mockup and charges nothing. For future stable releases a permanent keystore and verified billing are required." \
+            --title "Wrongulator v0.7.2 — first Android preview" \
+            --notes "Snake Ultimate edge-wrap update: every map and mode passes through walls onto the opposite side, with seamless split-edge animation and original collision rules for body and obstacles. Snake Console 2.0 controls remain intact. Other arcade games and calculator are intact. Calculator and utility tools preserved. Free results are intentionally wrong as a joke. This is a DEBUG-signed test APK only; NOT an update-stable or production-signed package. The $1/month paywall is a mockup and charges nothing. For future stable releases a permanent keystore and verified billing are required." \
             --prerelease
