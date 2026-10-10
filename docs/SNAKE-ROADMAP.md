@@ -51,3 +51,18 @@ Do not load untrusted executable plug-ins or bloat the APK with sprite libraries
 - Real FPS, accessibility and input feel require manual testing on physical Android phones.
 - Source is in `arcade/SnakeGame.kt`; UI is in `ui/SnakeConsole.kt`.
 - Before merge: run JVM unit tests, Android Lint and APK assemble via GitHub Actions.
+
+
+## v0.7 implementation audit (Snake Ultimate)
+
+New pure-Kotlin systems:
+- `SnakeRules.kt`: four modes, three difficulty levels, four arenas, four skins, selectable enemy count
+- `SnakeWorld.kt`: capped rival AI (up to three), moving multi-hit boss, barriers, map hazards, bounce/chain/grenade shots
+- `SnakeGame.kt`: combo multiplier, four bounded timed powers, food magnet, shields, slow motion, double score, timed runs and mission counters
+- `SnakeReplayCodec.kt`: compact versioned, URL-safe replay data with strict size bounds and non-executable input events
+- `SnakeVisuals.kt`: procedural power-ups, opponents, boss, portals, glowing trails and alternate palettes
+- UI split into `SnakeUltimateConsole`, `SnakePlayfield`, `SnakeControlPanel`, `SnakeSettingsSheet`, `SnakeProgressSheet` and `SnakePreferences`
+
+Implemented: ideas 1–12 and 14–17 in locally testable scope. For #13, existing tiny synthetic Android tones remain; SoundPool requires a licensed and well-mixed asset pack and device audio QA. For #18, **local** best scores exist; an actual online leaderboard is **not present** and will not be claimed until an opt-in remote API, moderation/rate limiting, consent, and anti-cheat verification are deployed.
+
+The reproducible replay is a seed and compact input trace. Share is opt-in through Android's standard share sheet. It is not a video capture feature. Native 30/60 FPS selection throttles visual repaints; it does not change the simulation clock. Landscape uses an alternative board + side-controls layout. Phone/controller/device QA and replay mismatch edge cases remain to be verified.
