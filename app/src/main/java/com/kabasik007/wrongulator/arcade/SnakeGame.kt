@@ -45,7 +45,7 @@ class SnakeGame(
         private set
     internal var direction = PadKey.RIGHT
         private set
-    private var queuedDirection = PadKey.RIGHT
+    private val turnQueue = SnakeTurnQueue()
     internal var food = GridCell(14, 13)
         private set
     internal var snack = food
@@ -114,7 +114,7 @@ class SnakeGame(
         body.addAll(listOf(GridCell(8, 13), GridCell(7, 13), GridCell(6, 13)))
         previousBody = body.toList()
         direction = PadKey.RIGHT
-        queuedDirection = direction
+        turnQueue.reset(direction)
         score = 0
         finished = false
         lastEvent = SnakeEvent.NONE
@@ -143,16 +143,7 @@ class SnakeGame(
     }
 
     override fun input(key: PadKey) {
-        if (finished || key == PadKey.ACTION) return
-        val backwards = when (direction) {
-            PadKey.LEFT -> key == PadKey.RIGHT
-            PadKey.RIGHT -> key == PadKey.LEFT
-            PadKey.UP -> key == PadKey.DOWN
-            PadKey.DOWN -> key == PadKey.UP
-            else -> false
-        }
-        if (backwards) return
-        queuedDirection = key
+        if (finished || !turnQueue.offer(key)) return
         if (recording && commands.size < SnakeReplayCodec.MAX_ACTIONS) {
             commands.add(SnakeReplayAction(steps, direction = key))
         }
@@ -181,7 +172,7 @@ class SnakeGame(
         val elapsedThisTick = intervalMs
         timeMs += elapsedThisTick
         world.moveRivals(steps, body)
-        direction = queuedDirection
+        direction = turnQueue.advance()
         val head = body.first()
         var next = when (direction) {
             PadKey.LEFT -> GridCell(head.x - 1, head.y)
