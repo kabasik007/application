@@ -415,7 +415,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
                     )
                     SnakeStatusLine(game, replay != null)
                     SnakeControlPanel(
-                        settings.leftHanded, live && replay == null,
+                        settings.leftHanded, controlsEnabled,
                         settings.rules.canShoot, game.ammo, game.selectedWeapon,
                         actionRes, actionSymbol, ::steer, ::fire, ::mainAction, ::nextWeapon,
                     )
