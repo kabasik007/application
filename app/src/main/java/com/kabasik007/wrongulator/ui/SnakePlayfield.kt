@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +54,7 @@ internal fun SnakePlayfield(
     onDirection: (PadKey) -> Unit,
 ) {
     val fadeIn = remember(game) { Animatable(.65f) }
+    val latestDirection by rememberUpdatedState(onDirection)
     LaunchedEffect(game) { fadeIn.animateTo(1f, tween(900)) }
 
     Box(
@@ -75,7 +78,7 @@ internal fun SnakePlayfield(
                         } else {
                             if (drag.y > 0f) PadKey.DOWN else PadKey.UP
                         }
-                        onDirection(direction)
+                        latestDirection(direction)
                         drag = Offset.Zero
                     }
                 }
