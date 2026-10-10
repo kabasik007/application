@@ -85,3 +85,13 @@ Implemented:
 - [x] Give remaining vertical space to the portrait game field; compact HUD and board margins.
 - [x] No new permissions or heavy artwork.
 - [ ] On-device touch, talkback, multiple resolution, controller latency and FPS QA still required.
+
+
+## v0.7.2 — pass through every wall
+
+- All four arena borders now wrap for **all** Snake modes (Classic, Combat, Zen, Time Attack) and maps, not only the special Wrap setting.
+- Right → left, left → right, top → bottom, bottom → top. No deaths solely from crossing a border.
+- An obstacle, hazard, rival, boss or the snake’s own body **at the arrival cell** still collides as before. The Zen invulnerability rule is unchanged.
+- The head and body segments draw on **both edges during the transition**, avoiding a huge animation across the middle. Remote portal teleports still snap rather than sweeping through the arena.
+- The legacy Wrap map preset is retained for compatible saved settings and replay codes, even though all maps now share the same edge-wrap topology.
+- Tests cover 4 directions, map variants, arrival-cell collisions and split-edge drawing.
