@@ -202,7 +202,7 @@ internal fun SnakeConsole(onExit: () -> Unit, modifier: Modifier = Modifier) {
                         play(SnakeSounds.Cue.LOSE)
                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     }
-                    SnakeEvent.NONE -> Unit
+                    else -> Unit
                 }
             }
             interpolation = if (game.finished) 1f
