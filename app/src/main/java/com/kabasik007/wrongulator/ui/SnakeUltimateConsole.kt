@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -89,10 +90,10 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
     var unlocked by remember { mutableStateOf(SnakePreferences.unlocked(options)) }
     var showSettings by remember { mutableStateOf(false) }
     var showProgress by remember { mutableStateOf(false) }
-    var started by remember { mutableStateOf(false) }
+    // Automatic one-second launch: no full-screen countdown and no dead controls.
+    var starting by remember { mutableStateOf(true) }
     var paused by remember { mutableStateOf(false) }
     var foreground by remember { mutableStateOf(true) }
-    var countdown by remember { mutableIntStateOf(0) }
     var revision by remember { mutableIntStateOf(0) }
     var interpolation by remember { mutableFloatStateOf(1f) }
     var generation by remember { mutableIntStateOf(0) }
@@ -104,8 +105,10 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
     val haptics = LocalHapticFeedback.current
     val scoreNow = revision.let { game.score }
     val gameOver = revision.let { game.finished }
-    val live = started && countdown == 0 && !paused && foreground &&
+    val live = !starting && !paused && foreground &&
         !gameOver && !showSettings && !showProgress
+    val controlsEnabled = !paused && foreground && !gameOver &&
+        !showSettings && !showProgress && replay == null
 
     BackHandler { onExit() }
     DisposableEffect(sounds) { onDispose { sounds.close() } }
@@ -117,7 +120,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
                 Lifecycle.Event.ON_START -> foreground = true
                 Lifecycle.Event.ON_STOP -> {
                     foreground = false
-                    if (started) paused = true
+                    paused = true
                 }
                 else -> Unit
             }
@@ -126,11 +129,12 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
         onDispose { lifecycle.lifecycle.removeObserver(listener) }
     }
     LaunchedEffect(Unit) { focus.requestFocus() }
-    LaunchedEffect(countdown, paused, foreground) {
-        if (countdown > 0 && !paused && foreground) {
-            delay(1_000)
-            countdown--
-        }
+    // The game fades in for 900ms and starts automatically. Directional buttons
+    // already accept input during the transition; the first turn is buffered.
+    LaunchedEffect(game) {
+        starting = true
+        delay(900L)
+        starting = false
     }
 
     fun feedback() {
@@ -145,9 +149,8 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
         replay = null
         replayCursor = 0
         game = freshGame(settings)
-        started = true
+        starting = true
         paused = false
-        countdown = 5
         interpolation = 1f
         generation++
         revision++
@@ -158,14 +161,12 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
         feedback()
         when {
             gameOver -> startOver()
-            !started -> {
-                started = true
-                countdown = 5
+            starting -> {
+                // The bottom-right START button skips the remaining visual warmup.
+                starting = false
                 paused = false
-                generation++
                 effect(SnakeSounds.Cue.START)
             }
-            countdown > 0 -> Unit
             else -> {
                 paused = !paused
                 effect(SnakeSounds.Cue.PAUSE)
@@ -174,14 +175,14 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
     }
 
     fun steer(direction: PadKey) {
-        if (!live || replay != null) return
+        if (!controlsEnabled) return
         game.input(direction)
         revision++
         feedback()
     }
 
     fun fire() {
-        if (!live || replay != null) return
+        if (!controlsEnabled) return
         if (game.launchGrenade()) {
             revision++
             effect(SnakeSounds.Cue.BLAST)
@@ -207,9 +208,8 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
         replay = trace
         replayCursor = 0
         game = SnakeGame.fromReplay(trace)
-        started = true
+        starting = true
         paused = false
-        countdown = 3
         interpolation = 1f
         generation++
         revision++
@@ -297,20 +297,18 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
 
     val actionRes = when {
         gameOver -> R.string.arcade_restart
-        !started -> R.string.snake_start
+        starting -> R.string.snake_start
         paused -> R.string.arcade_resume
-        countdown > 0 -> R.string.snake_start
         else -> R.string.arcade_pause
     }
     val actionSymbol = when {
         gameOver -> "↻"
-        !started || paused -> "▶"
-        countdown > 0 -> "5"
+        starting || paused -> "▶"
         else -> "Ⅱ"
     }
 
     Column(
-        modifier = modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)
+        modifier = modifier.fillMaxSize()
             .background(Brush.verticalGradient(listOf(Color(0xFF0D1A2B), shellInk)))
             .focusRequester(focus)
             .onPreviewKeyEvent { event ->
@@ -330,7 +328,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
                 true
             }.focusable()
             .padding(horizontal = 12.dp, vertical = 5.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             TextButton(onClick = onExit) {
@@ -378,18 +376,24 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
                 color = shellMint, fontSize = 11.sp,
             )
         }
-        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        BoxWithConstraints(modifier = Modifier.weight(1f).fillMaxWidth()) {
             val landscape = maxWidth > maxHeight
             if (landscape) {
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     SnakePlayfield(
-                        game, Modifier.weight(1f).fillMaxSize(), revision, interpolation,
-                        live, paused, started, countdown, ::mainAction, ::steer,
+                        game, Modifier.weight(1f).fillMaxHeight(), revision, interpolation,
+                        paused, ::mainAction, ::steer,
                     )
-                    Column(Modifier.width(240.dp), verticalArrangement = Arrangement.SpaceBetween) {
+                    Column(
+                        Modifier.width(350.dp).fillMaxHeight(),
+                        verticalArrangement = Arrangement.SpaceBetween,
+                    ) {
                         SnakeStatusLine(game, replay != null)
                         SnakeControlPanel(
-                            settings.leftHanded, live && replay == null,
+                            settings.leftHanded, controlsEnabled,
                             settings.rules.canShoot, game.ammo, game.selectedWeapon,
                             actionRes, actionSymbol, ::steer, ::fire, ::mainAction, ::nextWeapon,
                         )
@@ -401,10 +405,13 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
                     }
                 }
             } else {
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Column(
+                    Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
                     SnakePlayfield(
                         game, Modifier.weight(1f).fillMaxWidth(), revision, interpolation,
-                        live, paused, started, countdown, ::mainAction, ::steer,
+                        paused, ::mainAction, ::steer,
                     )
                     SnakeStatusLine(game, replay != null)
                     SnakeControlPanel(
@@ -430,8 +437,7 @@ internal fun SnakeUltimateConsole(onExit: () -> Unit, modifier: Modifier = Modif
             showSettings = false
             best = scores.getInt(SnakePreferences.scoreKey(next.rules), 0)
             startOver()
-            started = false
-            countdown = 0
+            starting = true
         },
         onDismiss = { showSettings = false },
     )
@@ -450,11 +456,11 @@ private fun SnakeHudStat(
     primary: Boolean = false,
 ) {
     Surface(modifier = modifier,
-        color = Color(0xFF16253A), shape = RoundedCornerShape(14.dp)) {
-        Column(Modifier.padding(horizontal = 8.dp, vertical = 7.dp)) {
+        color = Color(0xFF16253A), shape = RoundedCornerShape(12.dp)) {
+        Column(Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
             Text(title.uppercase(), color = shellMuted, fontSize = 9.sp, maxLines = 1)
             Text(value, color = if (primary) shellMint else shellWhite,
-                fontWeight = FontWeight.Black, fontSize = 21.sp, maxLines = 1)
+                fontWeight = FontWeight.Black, fontSize = 18.sp, maxLines = 1)
         }
     }
 }
